@@ -3,7 +3,7 @@
  * 🔥 Powered by Google Gemini 2.5 Flash
  * 🧑‍💻 Developer: EMon Hawladar (EMon-BHai)
  * 🌎 Website: https://emonbhai.xyz
- * 📞 Contact: wa.me/+8801615298449
+ * 📞 Contact: wa.me/+8801309991724
  * 🧰 GitHub: https://github.com/emonbhai
  * 🛠️ Hosting: Vercel
  *
@@ -79,7 +79,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       developer: "EMon-BHai",
       website: "https://emonbhai.xyz",
-      contact: "wa.me/+8801615298449",
+      contact: "wa.me/+8801309991724",
       model: "gemini-2.5-flash",
       prompt: userPrompt,
       response: text,
