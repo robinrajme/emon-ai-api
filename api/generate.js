@@ -7,52 +7,48 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(req, res) {
   try {
-    // ✅ Allow both GET and POST
-    let prompt;
-
-    if (req.method === "GET") {
-      prompt = req.query.prompt;
-    } else if (req.method === "POST") {
-      prompt = req.body?.prompt;
-    } else {
-      return res.status(405).json({
-        developer: "EMon-BHai",
-        error: "Method Not Allowed! Please use GET or POST method.",
-      });
-    }
+    // Handle GET or POST
+    let prompt =
+      req.method === "GET"
+        ? req.query.prompt
+        : req.body?.prompt;
 
     if (!prompt) {
       return res.status(400).json({
         developer: "EMon-BHai",
-        error: "Please provide a prompt either in query or body.",
+        error: "❌ Please provide a prompt in query or JSON body.",
       });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    // Check API Key
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
       return res.status(500).json({
         developer: "EMon-BHai",
-        error: "Missing GEMINI_API_KEY in environment.",
+        error: "❌ Missing GEMINI_API_KEY in environment.",
       });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+    // Generate response
     const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const text = result?.response?.text?.() || "No output";
 
-    res.status(200).json({
+    return res.status(200).json({
       developer: "EMon-BHai",
       website: "https://emonbhai.xyz",
       prompt,
-      reply: response.text(),
+      reply: text,
     });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({
+  } catch (err) {
+    console.error("❌ Function Error:", err);
+    return res.status(500).json({
       developer: "EMon-BHai",
       error: "Internal Server Error",
-      message: error.message,
+      message: err.message,
     });
   }
 }
