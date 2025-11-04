@@ -1,0 +1,10 @@
+{
+  "name": "emon-ai-api",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "EMon AI - Gemini 2.5 Flash API (By EMon-BHai)",
+  "author": "EMon Hawladar",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
